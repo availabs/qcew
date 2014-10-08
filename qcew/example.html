@@ -1,0 +1,53 @@
+<html>
+    <head>
+
+        <!-- This works in conjunction with jsdata.php -->
+        <!-- Make sure jsdata.php is also stored on your server -->
+        <!-- qcew.js has a reference to jsdata.php, -->
+        <!-- make sure it points to your server -->
+        <!-- EX src="http://www.yourserver.com/qcew.js" -->
+        <script src="qcew.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+    </head>
+    
+    <body>
+        <script>
+     
+            var callbackFunction = function (dataTable) {
+                console.log(dataTable)
+                // var html = "";
+                // for( var x = 0; x < dataTable.length; x += 1) {
+                //     html += dataTable[x] + "<br>"; 
+                // }
+                // document.body.innerHTML += "<hr>" + html;                    
+            };
+            var nyCounties = [];
+            d3.json('counties.json',function(counties){
+                
+                counties.features.forEach(function(county){
+                
+                    var geoid = county.properties.GEO_ID.substr(9);
+                
+                    if(geoid.substring(0,2) == '36'){
+                
+                        nyCounties.push(geoid);
+                
+                    }
+
+                });
+                nyCounties.forEach(function(countyGeoid){
+                    console.log('getting data for ',countyGeoid);
+                    Qcew.getAreaData("2013","1",countyGeoid, callbackFunction);
+            
+                });
+
+            });
+
+
+           
+            
+
+
+        </script>
+    </body>
+</html>

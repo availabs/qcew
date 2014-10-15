@@ -35,16 +35,35 @@
                     }
 
                 });
+
+                // For loop that goes through every county (countyGeoid)
                 nyCounties.forEach(function(countyGeoid){
-                    console.log('getting data for ',countyGeoid);
-                    Qcew.getAreaData("2013","1",countyGeoid, callbackFunction);
-            
+
+                    // For loop that goes through every year
+                    for(var year = 2012; year<=2014; year++){
+
+                        // For loop that goes through every quarter
+                        for(var quarter = 1; quarter<=4; quarter++){
+
+                            console.log('getting data for county: '+countyGeoid+' year: '+year+' quarter: '+quarter);
+                            Qcew.getAreaData(year,quarter,countyGeoid, callbackFunction);
+
+                        }
+
+                    }
+
                 });
 
             });
 
 
-           
+// ****************************************************************** //
+// Need to get data for every quarter and every year for every county //
+// This means starting at county = 0, year = 0, quarter = 0 //
+// When quarter = max, done with quarters //
+// When year = max, done with years //
+// When county = max, done with counties //
+// ****************************************************************** //       
             
 
 

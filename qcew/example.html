@@ -37,6 +37,8 @@
                 });
 
                 // For loop that goes through every county (countyGeoid)
+                var totalData = {};
+                var count = 0;
                 nyCounties.forEach(function(countyGeoid){
 
                     // For loop that goes through every year
@@ -45,8 +47,31 @@
                         // For loop that goes through every quarter
                         for(var quarter = 1; quarter<=4; quarter++){
 
-                            console.log('getting data for county: '+countyGeoid+' year: '+year+' quarter: '+quarter);
-                            Qcew.getAreaData(year,quarter,countyGeoid, callbackFunction);
+                            //Log to let us know it htis every county/year/quarter
+                            //console.log('getting data for county: '+countyGeoid+' year: '+year+' quarter: '+quarter);
+
+                            //Call to Qcew function that gets data given the following parameters
+                            Qcew.getAreaData(year,quarter,countyGeoid, function(data){
+                                //console.log(data);
+                                if(typeof totalData[countyGeoid] == 'undefined'){
+                                    totalData[countyGeoid] = {}
+                                }
+                                if(typeof totalData[countyGeoid][year] == 'undefined'){
+                                    totalData[countyGeoid][year] = {}
+                                }
+                                if(typeof totalData[countyGeoid][year][quarter] == 'undefined'){
+                                    totalData[countyGeoid][year][quarter] = {}
+                                }
+
+                                totalData[countyGeoid][year][quarter] = data;
+                                count++;
+
+                                // If count = every county/quarter/year combination, print it out
+                                if(count == ((nyCounties.length) * 4 * 3)){
+                                    d3.select('body').html(JSON.stringify(totalData));
+                                }
+                           
+                            });
 
                         }
 
